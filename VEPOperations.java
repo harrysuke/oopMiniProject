@@ -34,10 +34,12 @@ public class VEPOperations extends Vep {
                 String expiryDate = rs.getString("ExpiryDate");
                 String locationtoVisit = rs.getString("LocationtoVisit");
                 String purposeofVisit = rs.getString("PurposeofVisit");
-                System.out.println("RNU: " + rnu + "\nNRIC: " + nric + "\nName: " + name + "\nCompany: " + company
-                        + "\nVehicle No: " + vehicleNo + "\nContact No: " + contactNo + "\nDate of visit: "
-                        + dateOfVisit + "\nExpiry Date: " + expiryDate + "\nLocation to visit: " + locationtoVisit
-                        + "\nPurpose of visit: " + purposeofVisit + "\n");
+                //System.out.println("RNU: " + rnu + "\nNRIC: " + nric + "\nName: " + name + "\nCompany: " + company
+                        //+ "\nVehicle No: " + vehicleNo + "\nContact No: " + contactNo + "\nDate of visit: "
+                        //+ dateOfVisit + "\nExpiry Date: " + expiryDate + "\nLocation to visit: " + locationtoVisit
+                        //+ "\nPurpose of visit: " + purposeofVisit + "\n");
+                System.out.format("%-10s %-20s %-20s %-20s %-15s %-15s %-15s %-15s %-20s %-20s\n",
+                        rnu, nric, name, company, vehicleNo, contactNo, dateOfVisit, expiryDate, locationtoVisit, purposeofVisit);
                 ++rowCount;
             }
             System.out.println("Total number of records " + rowCount);
@@ -111,13 +113,18 @@ public class VEPOperations extends Vep {
             System.out.println("Enter contact number:");
             String contactNo = scanner.nextLine();
 
-            String sql = "INSERT INTO vep (NRICPassportNo, Name, CompanyName, VehicleNo, ContactNo) VALUES (?,?,?,?,?)";
+            //Date currentDate = new Date();
+            //String currentDateStr = df.format(currentDate);
+
+            String sql = "INSERT INTO vep (rnu, NRICPassportNo, Name, CompanyName, VehicleNo, ContactNo, DateofVisit, ExpiryDate, LocationtoVisit, PurposeofVisit) VALUES (0,?,?,?,?,?,?,?,0,0)";
             try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, nric);
                 pstmt.setString(2, name);
                 pstmt.setString(3, companyName);
                 pstmt.setString(4, vehicleNo);
                 pstmt.setString(5, contactNo);
+                pstmt.setDate(6, new java.sql.Date(new Date().getTime()));
+                pstmt.setDate(7, new java.sql.Date(new Date().getTime()));
                 int rowsAffected = pstmt.executeUpdate();
 
                 System.out.println(rowsAffected+" record added successfully");
@@ -187,9 +194,9 @@ public class VEPOperations extends Vep {
     }
     
     //polymorphism
-    public void callGetGroupVisitors() {
+    public void callGetGroupVisitors() throws SQLException {
     	System.out.println("Enter Group Visitor ID: ");
-        String idn = scanner.toString();
+        String idn = scanner.nextLine();
         String result = getGroupVisitors(idn);
         System.out.println(result);
     }
@@ -336,12 +343,6 @@ public class VEPOperations extends Vep {
 
 	@Override
 	public String searchVep() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getGroupVisitors() {
 		// TODO Auto-generated method stub
 		return null;
 	}

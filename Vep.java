@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Scanner;
 import java.util.stream.StreamSupport;
 
@@ -211,6 +213,32 @@ public abstract class Vep implements Permit {
 		
 	}
 	
-	//polymorphism
-	public abstract String getGroupVisitors();
+        //polymorphism
+        public String getGroupVisitors(String idno) throws SQLException{
+            List<String> groupVisitors = new ArrayList<>();
+            try (Connection conn = DriverManager.getConnection(url, username, password);
+                 Statement stmt = conn.createStatement()) {
+                String sql = "SELECT idno, Name, CompanyName, PermitType, amount FROM viewveppep WHERE idno = ?"; // Select specific columns
+                try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                    pstmt.setString(1, idno);
+                    try (ResultSet rs = stmt.executeQuery(sql)) {
+                        if (!rs.next()){
+                            return "No record found for ID: "+idno;
+                        }
+                        while (rs.next()) {
+                            String idn = rs.getString("idno");
+                            String name = rs.getString("Name");
+                            String companyName = rs.getString("CompanyName");
+                            String permitType = rs.getString("PermitType");
+                            String amount = rs.getString("amount"); // Assuming amount is a String
+
+                            groupVisitors.add(String.format("idno: %s\nName: %s\nCompany: %s\nPermit Type: %s\nAmount: %s\n", idn, name, companyName, permitType, amount));
+                        }
+                    }
+                }
+            }
+            return String.join("", groupVisitors); // Join list elements for a single string
+        }
+
+
 }

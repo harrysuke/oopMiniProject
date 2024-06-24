@@ -15,8 +15,8 @@ public class Main {
         
         do {
         	System.out.println("Welcome to Safety and Security system");
-        	System.out.println("1. Manage Vep");
-        	System.out.println("2. Manage Pep");
+        	System.out.println("1. Manage Vep (vehicle entry permit)");
+        	System.out.println("2. Manage Pep (permanent entry permit)");
         	System.out.println("3. Exit");
         	System.out.println("Enter your choice:");
         	entityChoice = scanner.nextInt();
@@ -45,9 +45,10 @@ public class Main {
             System.out.println("2. View all VEP records");
             System.out.println("3. Update existing VEP record");
             System.out.println("4. Search VEP by name");
-            System.out.println("5. Delete VEP record");
-            System.out.println("6. Export PEP records to text file");
-            System.out.println("7. Back to Main Menu");
+            System.out.println("5. Delete VEP record by ID");
+            System.out.println("6. Export VEP records to text file");
+			System.out.println("7. Call Group Visitors");
+            System.out.println("0. Back to Main Menu");
             System.out.println("Enter your choice:\n");
 
             try{
@@ -77,7 +78,11 @@ public class Main {
                     	System.out.println("Performing export operation...");
                     	vepOperations.exportToTextFile();
             			break;
-                    case 7:
+					case 7:
+						System.out.println("Performing call group visitors...");
+						vepOperations.callGetGroupVisitors();
+						break;
+                    case 0:
                         System.out.println("Exiting VEP Management...");
                         break;
                     default:

@@ -191,11 +191,4 @@ public class Pep extends Vep {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public String getGroupVisitors() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
