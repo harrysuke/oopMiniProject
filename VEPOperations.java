@@ -1,3 +1,4 @@
+//VEPOperations.java
 package org.example;
 
 import java.io.FileWriter;
@@ -7,7 +8,6 @@ import java.math.BigDecimal;
 import java.sql.*;
 import java.util.Date;
 import java.util.Scanner;
-import java.util.stream.StreamSupport;
 
 //A concrete class that extends the Vep class.
 public class VEPOperations extends Vep {
@@ -233,124 +233,109 @@ public class VEPOperations extends Vep {
         }
     }
 
-	@Override
-	public int getRnu() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
-	@Override
-	public String getIdentityType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public int getRnu() {
+        return 0;
+    }
 
-	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String getIdentityType() {
+        return "";
+    }
 
-	@Override
-	public String getCompanyName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String getName() {
+        return "";
+    }
 
-	@Override
-	public String getVehicleNo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String getCompanyName() {
+        return "";
+    }
 
-	@Override
-	public String getContactNo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String getVehicleNo() {
+        return "";
+    }
 
-	@Override
-	public String getApplicantCategory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String getContactNo() {
+        return "";
+    }
 
-	@Override
-	public Date getDateOfVisit() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String getApplicantCategory() {
+        return "";
+    }
 
-	@Override
-	public Date getExpiryDate() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String getDateOfVisit() {
+        return null;
+    }
 
-	@Override
-	public int getDurationOfVisit() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public String getExpiryDate() {
+        return null;
+    }
 
-	@Override
-	public String getLocationToVisit() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public int getDurationOfVisit() {
+        return 0;
+    }
 
-	@Override
-	public String getPurposeOfVisit() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String getLocationToVisit() {
+        return "";
+    }
 
-	@Override
-	public BigDecimal getAmount() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String getPurposeOfVisit() {
+        return "";
+    }
 
-	@Override
-	public BigDecimal getTotalAmount() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public BigDecimal getAmount() {
+        return null;
+    }
 
-	@Override
-	public int getProcessingStatus() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+    @Override
+    public BigDecimal getTotalAmount() {
+        return null;
+    }
 
-	@Override
-	public Date getSafetyPermitExpiry() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public int getProcessingStatus() {
+        return 0;
+    }
 
-	@Override
-	public String getRemark() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Date getSafetyPermitExpiry() {
+        return null;
+    }
 
-	@Override
-	public String getPermitType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String getRemark() {
+        return "";
+    }
 
-	@Override
-	public String searchVep() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public String getPermitType() {
+        return "";
+    }
 
-	@Override
-	public String getGroupVisitors(String idn) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public void getConnectionString() {
 
+    }
+
+    @Override
+    public void registerVep() {
+
+    }
+
+    @Override
+    public String searchVep() {
+        return "";
+    }
 }

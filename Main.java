@@ -93,7 +93,6 @@ public class Main {
                 scanner.nextLine();
             }
         }
-        //scanner.close();
     }
     
     public static void managePep(Scanner scanner) {

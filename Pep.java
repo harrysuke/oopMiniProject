@@ -1,3 +1,4 @@
+//Pep.java
 package org.example;
 
 import java.math.BigDecimal;
@@ -18,25 +19,23 @@ public class Pep extends Vep {
 	private final String password = "";
 	Scanner scanner = new Scanner(System.in);
 	private int id;
-	private final String receiptNo;
-	private final String applicationType;
-	private final String identityNo;
-	private final String nationality;
-	private final String emailAddress;
-	private final String homeAddress;
-	private final String department;
-	private final String designation;
-	private final String officeAddress;
-	private final String officeContactNo;
-	private final Date driverLicenseExpiryDate;
-	private final Date safetyPermitStartDate;
-	private final Date safetyPermitEndDate;
+	private String receiptNo;
+	private String applicationType;
+	private String identityNo;
+	private String nationality;
+	private String emailAddress;
+	private String homeAddress;
+	private String department;
+	private String designation;
+	private String officeAddress;
+	private String officeContactNo;
+	private Date driverLicenseExpiryDate;
+	private Date safetyPermitStartDate;
+	private Date safetyPermitEndDate;
+	private String shortName;
 
-	public Pep(String receiptNo, String applicationType, String identityNo, String nationality, String emailAddress,
-			String homeAddress, String department, String designation, String officeAddress, String officeContactNo,
-			Date driverLicenseExpiryDate, Date safetyPermitStartDate, Date safetyPermitEndDate) {
-		super(receiptNo, applicationType, identityNo, nationality, emailAddress, homeAddress, department, designation,
-				officeAddress, officeContactNo, driverLicenseExpiryDate, safetyPermitStartDate, safetyPermitEndDate);
+	public Pep(int id, int rnu, String nricPassportNo, String name, String companyName, String vehicleNo, String contactNo, String dateOfVisit, String expiryDate, String locationtoVisit, String purposeofVisit, String receiptNo, String applicationType, String identityNo, String nationality, String emailAddress, String homeAddress, String department, String designation, String officeAddress, String officeContactNo, Date driverLicenseExpiryDate, Date safetyPermitStartDate, Date safetyPermitEndDate) {
+		super(id, rnu, nricPassportNo, name, companyName, vehicleNo, contactNo, dateOfVisit, expiryDate, locationtoVisit, purposeofVisit);
 		this.receiptNo = receiptNo;
 		this.applicationType = applicationType;
 		this.identityNo = identityNo;
@@ -50,6 +49,50 @@ public class Pep extends Vep {
 		this.driverLicenseExpiryDate = driverLicenseExpiryDate;
 		this.safetyPermitStartDate = safetyPermitStartDate;
 		this.safetyPermitEndDate = safetyPermitEndDate;
+	}
+
+	public Pep(String receiptNo, String applicationType, String identityNo, String nationality, String emailAddress, String homeAddress, String department, String designation, String officeAddress, String officeContactNo, Date driverLicenseExpiryDate, Date safetyPermitStartDate, Date safetyPermitEndDate, String receiptNo1, String applicationType1, String identityNo1, String nationality1, String emailAddress1, String homeAddress1, String department1, String designation1, String officeAddress1, String officeContactNo1, Date driverLicenseExpiryDate1, Date safetyPermitStartDate1, Date safetyPermitEndDate1) {
+		super(receiptNo, applicationType, identityNo, nationality, emailAddress, homeAddress, department, designation, officeAddress, officeContactNo, driverLicenseExpiryDate, safetyPermitStartDate, safetyPermitEndDate);
+		this.receiptNo = receiptNo1;
+		this.applicationType = applicationType1;
+		this.identityNo = identityNo1;
+		this.nationality = nationality1;
+		this.emailAddress = emailAddress1;
+		this.homeAddress = homeAddress1;
+		this.department = department1;
+		this.designation = designation1;
+		this.officeAddress = officeAddress1;
+		this.officeContactNo = officeContactNo1;
+		this.driverLicenseExpiryDate = driverLicenseExpiryDate1;
+		this.safetyPermitStartDate = safetyPermitStartDate1;
+		this.safetyPermitEndDate = safetyPermitEndDate1;
+	}
+
+
+
+	public Pep(String receiptNo, String applicationType, String identityNo, String nationality, String emailAddress, String homeAddress, String department, String designation, String officeAddress, String officeContactNo, Date driverLicenseExpiryDate, Date safetyPermitStartDate, Date safetyPermitEndDate) {
+
+        this.receiptNo = receiptNo;
+        this.applicationType = applicationType;
+        this.identityNo = identityNo;
+        this.nationality = nationality;
+        this.emailAddress = emailAddress;
+        this.homeAddress = homeAddress;
+        this.department = department;
+        this.designation = designation;
+        this.officeAddress = officeAddress;
+        this.officeContactNo = officeContactNo;
+        this.driverLicenseExpiryDate = driverLicenseExpiryDate;
+        this.safetyPermitStartDate = safetyPermitStartDate;
+        this.safetyPermitEndDate = safetyPermitEndDate;
+    }
+
+	public Pep(String receiptNo, String applicationType, Object identityNo, String nationality, String emailAddress, String homeAddress, String department, String designation, String officeAddress, String officeContactNo, Date driverLicenseExpiryDate, Date safetyPermitStartDate, Date safetyPermitEndDate) {
+
+	}
+
+	public Pep() {
+
 	}
 
 	@Override
@@ -78,117 +121,145 @@ public class Pep extends Vep {
 	    return String.join("\n", groupVisitors);
 	}
 
-	@Override
-	public int getRnu() {
-		// TODO Auto-generated method stub
-		return 0;
+	public String getUrl() {
+		return url;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public Scanner getScanner() {
+		return scanner;
+	}
+
+	public void setScanner(Scanner scanner) {
+		this.scanner = scanner;
 	}
 
 	@Override
-	public String getIdentityType() {
-		// TODO Auto-generated method stub
-		return null;
+	public int getId() {
+		return id;
 	}
 
 	@Override
-	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	@Override
-	public String getCompanyName() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getReceiptNo() {
+		return receiptNo;
 	}
 
-	@Override
-	public String getVehicleNo() {
-		// TODO Auto-generated method stub
-		return null;
+	public void setReceiptNo(String receiptNo) {
+		this.receiptNo = receiptNo;
 	}
 
-	@Override
-	public String getContactNo() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getApplicationType() {
+		return applicationType;
 	}
 
-	@Override
-	public String getApplicantCategory() {
-		// TODO Auto-generated method stub
-		return null;
+	public void setApplicationType(String applicationType) {
+		this.applicationType = applicationType;
 	}
 
-	@Override
-	public Date getDateOfVisit() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getIdentityNo() {
+		return identityNo;
 	}
 
-	@Override
-	public Date getExpiryDate() {
-		// TODO Auto-generated method stub
-		return null;
+	public void setIdentityNo(String identityNo) {
+		this.identityNo = identityNo;
 	}
 
-	@Override
-	public int getDurationOfVisit() {
-		// TODO Auto-generated method stub
-		return 0;
+	public String getNationality() {
+		return nationality;
 	}
 
-	@Override
-	public String getLocationToVisit() {
-		// TODO Auto-generated method stub
-		return null;
+	public void setNationality(String nationality) {
+		this.nationality = nationality;
 	}
 
-	@Override
-	public String getPurposeOfVisit() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getEmailAddress() {
+		return emailAddress;
 	}
 
-	@Override
-	public BigDecimal getAmount() {
-		// TODO Auto-generated method stub
-		return null;
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
 
-	@Override
-	public BigDecimal getTotalAmount() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getHomeAddress() {
+		return homeAddress;
 	}
 
-	@Override
-	public int getProcessingStatus() {
-		// TODO Auto-generated method stub
-		return 0;
+	public void setHomeAddress(String homeAddress) {
+		this.homeAddress = homeAddress;
 	}
 
-	@Override
-	public Date getSafetyPermitExpiry() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getDepartment() {
+		return department;
 	}
 
-	@Override
-	public String getRemark() {
-		// TODO Auto-generated method stub
-		return null;
+	public void setDepartment(String department) {
+		this.department = department;
 	}
 
-	@Override
-	public String getPermitType() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getDesignation() {
+		return designation;
 	}
 
-	@Override
-	public String searchVep() {
-		// TODO Auto-generated method stub
-		return null;
+	public void setDesignation(String designation) {
+		this.designation = designation;
+	}
+
+	public String getOfficeAddress() {
+		return officeAddress;
+	}
+
+	public void setOfficeAddress(String officeAddress) {
+		this.officeAddress = officeAddress;
+	}
+
+	public String getOfficeContactNo() {
+		return officeContactNo;
+	}
+
+	public void setOfficeContactNo(String officeContactNo) {
+		this.officeContactNo = officeContactNo;
+	}
+
+	public Date getDriverLicenseExpiryDate() {
+		return driverLicenseExpiryDate;
+	}
+
+	public void setDriverLicenseExpiryDate(Date driverLicenseExpiryDate) {
+		this.driverLicenseExpiryDate = driverLicenseExpiryDate;
+	}
+
+	public Date getSafetyPermitStartDate() {
+		return safetyPermitStartDate;
+	}
+
+	public void setSafetyPermitStartDate(Date safetyPermitStartDate) {
+		this.safetyPermitStartDate = safetyPermitStartDate;
+	}
+
+	public Date getSafetyPermitEndDate() {
+		return safetyPermitEndDate;
+	}
+
+	public void setSafetyPermitEndDate(Date safetyPermitEndDate) {
+		this.safetyPermitEndDate = safetyPermitEndDate;
+	}
+
+	public String getShortName() {
+		return shortName;
+	}
+
+	public void setShortName(String shortName) {
+		this.shortName = shortName;
 	}
 }

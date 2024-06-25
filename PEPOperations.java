@@ -1,3 +1,4 @@
+//PEPOperations.java
 package org.example;
 
 import java.io.FileWriter;
@@ -10,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Date;
+import java.util.Optional;
 import java.util.Scanner;
 
 public class PEPOperations extends Pep {
@@ -22,7 +24,7 @@ public class PEPOperations extends Pep {
 			String emailAddress, String homeAddress, String department, String designation, String officeAddress,
 			String officeContactNo, Date driverLicenseExpiryDate, Date safetyPermitStartDate,
 			Date safetyPermitEndDate) {
-		super(receiptNo, applicationType, identityNo, nationality, emailAddress, homeAddress, department, designation,
+		super(receiptNo, applicationType, Optional.ofNullable(identityNo), nationality, emailAddress, homeAddress, department, designation,
 				officeAddress, officeContactNo, driverLicenseExpiryDate, safetyPermitStartDate, safetyPermitEndDate);
 		// TODO Auto-generated constructor stub
 	}
@@ -50,11 +52,31 @@ public class PEPOperations extends Pep {
             System.out.println("Enter contact number:");
             String contactNo = scanner.nextLine();
 
-            pstmt.setString(1, nric);
-            pstmt.setString(2, name);
-            pstmt.setString(3, companyName);
-            pstmt.setString(4, vehicleNo);
-            pstmt.setString(5, contactNo);
+            String receiptNo = new String();
+            String applicationType = new String();
+            String identityNo = new String();
+            String nationality = new String();
+            String emailAddress = new String();
+            String homeAddress = new String();
+            String department = new String();
+            String designation = new String();
+            String officeAddress = new String();
+            String officeContactNo = new String();
+            Date driverLicenseExpiryDate = new Date();
+            Date safetyPermitStartDate = new Date();
+            Date safetyPermitEndDate = new Date();
+            Pep pep = new Pep(receiptNo, applicationType, Optional.of(identityNo), nationality, emailAddress, homeAddress, department, designation, officeAddress, officeContactNo, driverLicenseExpiryDate, safetyPermitStartDate, safetyPermitEndDate);
+            pep.setNricPassportNo(nric);
+            pep.setName(name);
+            pep.setCompanyName(companyName);
+            pep.setVehicleNo(vehicleNo);
+            pep.setContactNo(contactNo);
+
+            pstmt.setString(1, pep.getNricPassportNo());
+            pstmt.setString(2, pep.getName());
+            pstmt.setString(3, pep.getCompanyName());
+            pstmt.setString(4, pep.getVehicleNo());
+            pstmt.setString(5, pep.getContactNo());
             int rowsAffected = pstmt.executeUpdate();
 
             System.out.println(rowsAffected+" record added successfully");
@@ -71,13 +93,14 @@ public class PEPOperations extends Pep {
             try (ResultSet rs = stmt.executeQuery(sql)) {
                 int rowCount = 0;
                 while (rs.next()) {
-                    String nric = rs.getString("IdentityNo");
-                    String name = rs.getString("Name");
-                    String companyName = rs.getString("CompanyName");
-                    String vehicleNo = rs.getString("VehicleNo");
-                    String contactNo = rs.getString("ContactNo");
-                    System.out.println("NRIC: " + nric + "\nName: " + name + "\nCompany: " + companyName
-                            + "\nVehicle No: " + vehicleNo + "\nContact No: " + contactNo + "\n");
+                    Pep pep = new Pep();
+                    pep.setNricPassportNo(rs.getString("IdentityNo"));
+                    pep.setName(rs.getString("Name"));
+                    pep.setCompanyName(rs.getString("CompanyName"));
+                    pep.setVehicleNo(rs.getString("VehicleNo"));
+                    pep.setContactNo(rs.getString("ContactNo"));
+                    System.out.format("%-20s %-20s %-20s %-20s %-20s\n",
+                            pep.getNricPassportNo(), pep.getName(), pep.getCompanyName(), pep.getVehicleNo(), pep.getContactNo());
                     ++rowCount;
                 }
                 System.out.println("Total number of records " + rowCount);
@@ -96,20 +119,24 @@ public class PEPOperations extends Pep {
             System.out.println("Enter keyword to search:");
             String keyword = scanner.nextLine();
 
+            Pep pep = new Pep();
+            pep.setName(keyword);
+
             String sql = "SELECT * FROM pep WHERE Name LIKE ? ";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, "%" + keyword + "%");
+                pstmt.setString(1, "%" + pep.getName() + "%");
                 ResultSet rs = pstmt.executeQuery();
                 int rowCount = 0;
 
                 while (rs.next()) {
-                    String nric = rs.getString("NRICPassportNo");
-                    String name = rs.getString("Name");
-                    String companyName = rs.getString("CompanyName");
-                    String vehicleNo = rs.getString("VehicleNo");
-                    String contactNo = rs.getString("ContactNo");
-                    System.out.println("NRIC: " + nric + "\nName: " + name + "\nCompany: " + companyName
-                            + "\nVehicle No: " + vehicleNo + "\nContact No: " + contactNo + "\n");
+                    Pep pepResult = new Pep();
+                    pepResult.setNricPassportNo(rs.getString("NRICPassportNo"));
+                    pepResult.setName(rs.getString("Name"));
+                    pepResult.setCompanyName(rs.getString("CompanyName"));
+                    pepResult.setVehicleNo(rs.getString("VehicleNo"));
+                    pepResult.setContactNo(rs.getString("ContactNo"));
+                    System.out.println("NRIC: " + pepResult.getNricPassportNo() + "\nName: " + pepResult.getName() + "\nCompany: " + pepResult.getCompanyName()
+                            + "\nVehicle No: " + pepResult.getVehicleNo() + "\nContact No: " + pepResult.getContactNo() + "\n");
                     ++rowCount;
                 }
                 System.out.println("Total number of records " + rowCount);
@@ -140,14 +167,21 @@ public class PEPOperations extends Pep {
             System.out.println("Enter contact number:");
             String contactNo = scanner.nextLine();
 
+            Pep pep = new Pep();
+            pep.setNricPassportNo(nric);
+            pep.setName(name);
+            pep.setCompanyName(companyName);
+            pep.setVehicleNo(vehicleNo);
+            pep.setContactNo(contactNo);
+
             String sql = "UPDATE pep SET NRICPassportNo=?, Name=?, CompanyName=?, VehicleNo=?, ContactNo=? WHERE NRICPassportNo=?";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, nric);
-                pstmt.setString(2, name);
-                pstmt.setString(3, companyName);
-                pstmt.setString(4, vehicleNo);
-                pstmt.setString(5, contactNo);
-                pstmt.setString(6, nric);
+                pstmt.setString(1, pep.getNricPassportNo());
+                pstmt.setString(2, pep.getName());
+                pstmt.setString(3, pep.getCompanyName());
+                pstmt.setString(4, pep.getVehicleNo());
+                pstmt.setString(5, pep.getContactNo());
+                pstmt.setString(6, pep.getNricPassportNo());
                 int countUpdated = pstmt.executeUpdate();
 
                 System.out.println("Record updated successfully");
@@ -165,9 +199,12 @@ public class PEPOperations extends Pep {
             System.out.println("Enter ID number:");
             int id = Integer.parseInt(scanner.nextLine());
 
+            Pep pep = new Pep();
+            pep.setId(id);
+
             String sql = "DELETE FROM pep WHERE id=?";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setInt(1, id);
+                pstmt.setInt(1, pep.getId());
                 int rowsDeleted = pstmt.executeUpdate();
                 System.out.println(rowsDeleted + " record(s) deleted");
             } catch (SQLException e) {
@@ -194,20 +231,21 @@ public class PEPOperations extends Pep {
             String filename = "exportpep.txt";
             try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
                 while (rs.next()) {
-                    String rnu = rs.getString("rnu");
-                    String identityNo = rs.getString("IdentityNo");
-                    String name = rs.getString("Name");
-                    String shortName = rs.getString("ShortName");
-                    String contactNo = rs.getString("ContactNo");
-                    String eMailAddress = rs.getString("EMailAddress");
-                    String homeAddress = rs.getString("HomeAddress");
-                    String expiryDate = rs.getString("ExpiryDate");
-                    String locationtoVisit = rs.getString("LocationtoVisit");
-                    String purposeofVisit = rs.getString("PurposeofVisit");
-                    writer.println("RNU: " + rnu + "\nidentityNo: " + identityNo + "\nName: " + name + "\nShortName: " + shortName
-                            + "\nContactNo: " + contactNo + "\nHomeAddress: " + homeAddress + "\nExpiryDate: "
-                            + expiryDate + "\nExpiry Date: " + expiryDate + "\nLocation to visit: " + locationtoVisit
-                            + "\nPurpose of visit: " + purposeofVisit + "\n");
+                    Pep pep = new Pep();
+                    pep.setRnu(Integer.parseInt(rs.getString("rnu")));
+                    pep.setIdentityNo(rs.getString("IdentityNo"));
+                    pep.setName(rs.getString("Name"));
+                    pep.setShortName(rs.getString("ShortName"));
+                    pep.setContactNo(rs.getString("ContactNo"));
+                    pep.setEmailAddress(rs.getString("EMailAddress"));
+                    pep.setHomeAddress(rs.getString("HomeAddress"));
+                    pep.setExpiryDate(rs.getString("ExpiryDate"));
+                    pep.setLocationtoVisit(rs.getString("LocationtoVisit"));
+                    pep.setPurposeofVisit(rs.getString("PurposeofVisit"));
+                    writer.println("RNU: " + pep.getRnu() + "\nidentityNo: " + pep.getIdentityNo() + "\nName: " + pep.getName() + "\nShortName: " + pep.getShortName()
+                            + "\nContactNo: " + pep.getContactNo() + "\nEmailAddress: " + pep.getEmailAddress() + "\nHomeAddress: "
+                            + pep.getHomeAddress() + "\nExpiry Date: " + pep.getExpiryDate() + "\nLocation to visit: " + pep.getLocationtoVisit()
+                            + "\nPurpose of visit: " + pep.getPurposeofVisit() + "\n");
                 }
                 System.out.println("Records exported to " + filename);
             } catch (IOException e) {

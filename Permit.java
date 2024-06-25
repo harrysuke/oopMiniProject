@@ -1,3 +1,4 @@
+//Permit.java
 package org.example;
 
 import java.math.BigDecimal;
@@ -12,8 +13,8 @@ public interface Permit {
 	String getVehicleNo();
 	String getContactNo();
 	String getApplicantCategory();
-	Date getDateOfVisit();
-	Date getExpiryDate();
+	String getDateOfVisit();
+	String getExpiryDate();
 	int getDurationOfVisit();
 	String getLocationToVisit();
 	String getPurposeOfVisit();
