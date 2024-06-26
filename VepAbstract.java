@@ -1,6 +1,7 @@
 //VepAbstract.java
 package org.example;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public abstract class VepAbstract implements Permit {
@@ -14,4 +15,6 @@ public abstract class VepAbstract implements Permit {
     }
 
     public abstract void read();
+
+    public abstract String getGroupVisitors(String idn) throws SQLException;
 }

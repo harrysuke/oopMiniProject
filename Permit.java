@@ -5,29 +5,31 @@ import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.Date;
 
+import com.mysql.cj.x.protobuf.MysqlxDatatypes.Scalar.String;
+
 public interface Permit {
 	int getRnu();
-	String getIdentityType();
-	String getName();
-	String getCompanyName();
-	String getVehicleNo();
-	String getContactNo();
-	String getApplicantCategory();
-	String getDateOfVisit();
-	String getExpiryDate();
+	java.lang.String getIdentityType();
+	java.lang.String getName();
+	java.lang.String getCompanyName();
+	java.lang.String getVehicleNo();
+	java.lang.String getContactNo();
+	java.lang.String getApplicantCategory();
+	java.lang.String getDateOfVisit();
+	java.lang.String getExpiryDate();
 	int getDurationOfVisit();
-	String getLocationToVisit();
-	String getPurposeOfVisit();
+	java.lang.String getLocationToVisit();
+	java.lang.String getPurposeOfVisit();
 	BigDecimal getAmount();
 	BigDecimal getTotalAmount();
 	int getProcessingStatus();
 	Date getSafetyPermitExpiry();
-	String getRemark();
-	String getPermitType();
+	java.lang.String getRemark();
+	java.lang.String getPermitType();
 	
 	void getConnectionString();
 	void registerVep();
-	String searchVep();
+	java.lang.String searchVep();
 	
 	//polymorphism
 	String getGroupVisitors(String idn) throws SQLException;

@@ -1,6 +1,8 @@
 //Pep.java
 package org.example;
 
+import com.mysql.cj.x.protobuf.MysqlxDatatypes;
+
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -8,31 +10,28 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Pep extends Vep {
 	private final String url = "jdbc:mysql://localhost:3306/tbpsns";
 	private final String username = "root";
 	private final String password = "";
 	Scanner scanner = new Scanner(System.in);
-	private int id;
-	private String receiptNo;
-	private String applicationType;
-	private String identityNo;
-	private String nationality;
-	private String emailAddress;
-	private String homeAddress;
-	private String department;
-	private String designation;
-	private String officeAddress;
-	private String officeContactNo;
-	private Date driverLicenseExpiryDate;
-	private Date safetyPermitStartDate;
-	private Date safetyPermitEndDate;
-	private String shortName;
+	public int id;
+	public static String receiptNo;
+	public static String applicationType;
+	public static String identityNo;
+	public static String nationality;
+	public static String emailAddress;
+	public static String homeAddress;
+	public static String department;
+	public static String designation;
+	public static String officeAddress;
+	public static String officeContactNo;
+	public static Date driverLicenseExpiryDate;
+	public static Date safetyPermitStartDate;
+	public static Date safetyPermitEndDate;
+	public String shortName;
 
 	public Pep(int id, int rnu, String nricPassportNo, String name, String companyName, String vehicleNo, String contactNo, String dateOfVisit, String expiryDate, String locationtoVisit, String purposeofVisit, String receiptNo, String applicationType, String identityNo, String nationality, String emailAddress, String homeAddress, String department, String designation, String officeAddress, String officeContactNo, Date driverLicenseExpiryDate, Date safetyPermitStartDate, Date safetyPermitEndDate) {
 		super(id, rnu, nricPassportNo, name, companyName, vehicleNo, contactNo, dateOfVisit, expiryDate, locationtoVisit, purposeofVisit);
@@ -93,6 +92,9 @@ public class Pep extends Vep {
 
 	public Pep() {
 
+	}
+
+	public <T> Pep(MysqlxDatatypes.Scalar.String receiptNo, MysqlxDatatypes.Scalar.String applicationType, Optional<T> identityNo, MysqlxDatatypes.Scalar.String nationality, MysqlxDatatypes.Scalar.String emailAddress, MysqlxDatatypes.Scalar.String homeAddress, MysqlxDatatypes.Scalar.String department, MysqlxDatatypes.Scalar.String designation, MysqlxDatatypes.Scalar.String officeAddress, MysqlxDatatypes.Scalar.String officeContactNo, Date driverLicenseExpiryDate, Date safetyPermitStartDate, Date safetyPermitEndDate) {
 	}
 
 	@Override
@@ -261,5 +263,10 @@ public class Pep extends Vep {
 
 	public void setShortName(String shortName) {
 		this.shortName = shortName;
+	}
+
+	@Override
+	public MysqlxDatatypes.Scalar.String getGroupVisitors(MysqlxDatatypes.Scalar.String idn) throws SQLException {
+		return null;
 	}
 }
