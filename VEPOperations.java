@@ -185,7 +185,7 @@ public class VEPOperations extends Vep {
                 while (rs.next()){
                     Vep vep = new Vep();
                     vep.setRnu(Integer.parseInt(rs.getString("rnu")));
-                    setNricPassportNo(rs.getString("NRICPassportNo"));
+                    vep.setNricPassportNo(rs.getString("NRICPassportNo"));
                     vep.setName(rs.getString("Name"));
                     vep.setCompanyName(rs.getString("CompanyName"));
                     vep.setVehicleNo(rs.getString("VehicleNo"));
@@ -194,10 +194,12 @@ public class VEPOperations extends Vep {
                     vep.setExpiryDate(rs.getString("ExpiryDate"));
                     vep.setLocationtoVisit(rs.getString("LocationtoVisit"));
                     vep.setPurposeofVisit(rs.getString("PurposeofVisit"));
-                    System.out.print("RNU: " + vep.getRnu() + "\tNRIC: " + vep.getNricPassportNo() + "\tName: " + vep.getName() + "\tCompany: " + vep.getCompanyName()
-                            + "\tVehicle No: " + vep.getVehicleNo() + "\tContact No: " + vep.getContactNo() + "\tDate of visit: "
-                            + vep.getDateOfVisit() + "\tExpiry Date: " + vep.getExpiryDate() + "\tLocation to visit: " + vep.getLocationtoVisit()
-                            + "\tPurpose of visit: " + vep.getPurposeofVisit() + "\n");
+                    //System.out.print("RNU: " + vep.getRnu() + "\tNRIC: " + vep.getNricPassportNo() + "\tName: " + vep.getName() + "\tCompany: " + vep.getCompanyName()
+                            //+ "\tVehicle No: " + vep.getVehicleNo() + "\tContact No: " + vep.getContactNo() + "\tDate of visit: "
+                            //+ vep.getDateOfVisit() + "\tExpiry Date: " + vep.getExpiryDate() + "\tLocation to visit: " + vep.getLocationtoVisit()
+                            //+ "\tPurpose of visit: " + vep.getPurposeofVisit() + "\n");
+                    System.out.format("%-10s %-20s %-20s %-20s %-15s %-15s %-15s %-15s %-20s %-20s\n",
+                            vep.getRnu(), getNricPassportNo(), vep.getName(), vep.getCompanyName(), vep.getVehicleNo(), vep.getContactNo(), vep.getDateOfVisit(), vep.getExpiryDate(), vep.getLocationToVisit(), vep.getPurposeofVisit());
                     ++rowCount;
                 }
                 System.out.println("Total number of records "+rowCount);

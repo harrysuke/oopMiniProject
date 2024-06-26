@@ -32,8 +32,7 @@ public class PEPOperations extends Pep {
     public void registerPep(Scanner scanner) {
         System.out.println("Register PEP");
         try(Connection conn = DriverManager.getConnection(url, username, password);
-                Statement stmt = conn.createStatement();
-                PreparedStatement pstmt = conn.prepareStatement("INSERT INTO pep (NRICPassportNo, Name, CompanyName, VehicleNo, ContactNo) VALUES (?,?,?,?,?)")) {
+            Statement stmt = conn.createStatement()){
             //USER INPUT
             System.out.println("Creating new VEP record\n");
 
@@ -52,34 +51,26 @@ public class PEPOperations extends Pep {
             System.out.println("Enter contact number:");
             String contactNo = scanner.nextLine();
 
-            String receiptNo = new String();
-            String applicationType = new String();
-            String identityNo = new String();
-            String nationality = new String();
-            String emailAddress = new String();
-            String homeAddress = new String();
-            String department = new String();
-            String designation = new String();
-            String officeAddress = new String();
-            String officeContactNo = new String();
-            Date driverLicenseExpiryDate = new Date();
-            Date safetyPermitStartDate = new Date();
-            Date safetyPermitEndDate = new Date();
-            Pep pep = new Pep(receiptNo, applicationType, Optional.of(identityNo), nationality, emailAddress, homeAddress, department, designation, officeAddress, officeContactNo, driverLicenseExpiryDate, safetyPermitStartDate, safetyPermitEndDate);
+            Pep pep = new Pep();
             pep.setNricPassportNo(nric);
             pep.setName(name);
             pep.setCompanyName(companyName);
             pep.setVehicleNo(vehicleNo);
             pep.setContactNo(contactNo);
 
-            pstmt.setString(1, pep.getNricPassportNo());
-            pstmt.setString(2, pep.getName());
-            pstmt.setString(3, pep.getCompanyName());
-            pstmt.setString(4, pep.getVehicleNo());
-            pstmt.setString(5, pep.getContactNo());
-            int rowsAffected = pstmt.executeUpdate();
+            String sql = "INSERT INTO pep (IdentityNo, Name, CompanyName, VehicleNo, ContactNo) VALUES (?,?,?,?,?)";
+            try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, pep.getNricPassportNo());
+                pstmt.setString(2, pep.getName());
+                pstmt.setString(3, pep.getCompanyName());
+                pstmt.setString(4, pep.getVehicleNo());
+                pstmt.setString(5, pep.getContactNo());
+                int rowsAffected = pstmt.executeUpdate();
 
             System.out.println(rowsAffected+" record added successfully");
+            }catch (SQLException e){
+                e.printStackTrace();
+            }
         }catch (SQLException e){
             e.printStackTrace();
         }
@@ -130,13 +121,17 @@ public class PEPOperations extends Pep {
 
                 while (rs.next()) {
                     Pep pepResult = new Pep();
-                    pepResult.setNricPassportNo(rs.getString("NRICPassportNo"));
+                    pepResult.setNricPassportNo(rs.getString("IdentityNo"));
                     pepResult.setName(rs.getString("Name"));
                     pepResult.setCompanyName(rs.getString("CompanyName"));
                     pepResult.setVehicleNo(rs.getString("VehicleNo"));
                     pepResult.setContactNo(rs.getString("ContactNo"));
-                    System.out.println("NRIC: " + pepResult.getNricPassportNo() + "\nName: " + pepResult.getName() + "\nCompany: " + pepResult.getCompanyName()
-                            + "\nVehicle No: " + pepResult.getVehicleNo() + "\nContact No: " + pepResult.getContactNo() + "\n");
+                    //System.out.println("NRIC: " + pepResult.getNricPassportNo() + "\nName: " + pepResult.getName() + "\nCompany: " + pepResult.getCompanyName()
+                    //+ "\nVehicle No: " + pepResult.getVehicleNo() + "\nContact No: " + pepResult.getContactNo() + "\n");
+                    //System.out.print("NRIC: " + pepResult.getNricPassportNo() + "\tName: " + pepResult.getName() + "\tCompany: " + pepResult.getCompanyName()
+                    //+ "\tVehicle No: " + pepResult.getVehicleNo() + "\tContact No: " + pepResult.getContactNo() + "\n");
+                    System.out.format("%-10s %-20s %-20s %-20s %-15s %-15s %-15s %-15s %-20s %-20s\n",
+                            pepResult.getRnu(), pepResult.getNricPassportNo(), pepResult.getName(), pepResult.getCompanyName(), pepResult.getVehicleNo(), pepResult.getContactNo(), pepResult.getDateOfVisit(), pepResult.getExpiryDate(), pepResult.getLocationToVisit(), pepResult.getPurposeofVisit());
                     ++rowCount;
                 }
                 System.out.println("Total number of records " + rowCount);
@@ -167,21 +162,25 @@ public class PEPOperations extends Pep {
             System.out.println("Enter contact number:");
             String contactNo = scanner.nextLine();
 
+            System.out.println("Enter the ID of the record to update:");
+            int id = scanner.nextInt();
+
             Pep pep = new Pep();
             pep.setNricPassportNo(nric);
             pep.setName(name);
             pep.setCompanyName(companyName);
             pep.setVehicleNo(vehicleNo);
             pep.setContactNo(contactNo);
+            pep.setId(id);
 
-            String sql = "UPDATE pep SET NRICPassportNo=?, Name=?, CompanyName=?, VehicleNo=?, ContactNo=? WHERE NRICPassportNo=?";
+            String sql = "UPDATE pep SET IdentityNo=?, Name=?, CompanyName=?, VehicleNo=?, ContactNo=? WHERE id=?";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, pep.getNricPassportNo());
                 pstmt.setString(2, pep.getName());
                 pstmt.setString(3, pep.getCompanyName());
                 pstmt.setString(4, pep.getVehicleNo());
                 pstmt.setString(5, pep.getContactNo());
-                pstmt.setString(6, pep.getNricPassportNo());
+                pstmt.setInt(6, pep.getId());
                 int countUpdated = pstmt.executeUpdate();
 
                 System.out.println("Record updated successfully");
