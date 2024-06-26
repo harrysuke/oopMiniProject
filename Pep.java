@@ -14,10 +14,10 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Pep extends Vep {
-	private final String url = "jdbc:mysql://localhost:3306/tbpsns";
-	private final String username = "root";
-	private final String password = "";
-	Scanner scanner = new Scanner(System.in);
+	//private final String url = "jdbc:mysql://localhost:3306/tbpsns";
+	//private final String username = "root";
+	//private final String password = "";
+	//Scanner scanner = new Scanner(System.in);
 	private int id;
 	private String receiptNo;
 	private String applicationType;

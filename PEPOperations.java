@@ -15,10 +15,10 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class PEPOperations extends Pep {
-	private final String url = "jdbc:mysql://localhost:3306/tbpsns";
-    private final String username = "root";
-    private final String password = "";
-    Scanner scanner = new Scanner(System.in);
+	//private final String url = "jdbc:mysql://localhost:3306/tbpsns";
+    //private final String username = "root";
+    //private final String password = "";
+    //Scanner scanner = new Scanner(System.in);
     
 	public PEPOperations(String receiptNo, String applicationType, String identityNo, String nationality,
 			String emailAddress, String homeAddress, String department, String designation, String officeAddress,
@@ -52,20 +52,7 @@ public class PEPOperations extends Pep {
             System.out.println("Enter contact number:");
             String contactNo = scanner.nextLine();
 
-            String receiptNo = new String();
-            String applicationType = new String();
-            String identityNo = new String();
-            String nationality = new String();
-            String emailAddress = new String();
-            String homeAddress = new String();
-            String department = new String();
-            String designation = new String();
-            String officeAddress = new String();
-            String officeContactNo = new String();
-            Date driverLicenseExpiryDate = new Date();
-            Date safetyPermitStartDate = new Date();
-            Date safetyPermitEndDate = new Date();
-            Pep pep = new Pep(receiptNo, applicationType, Optional.of(identityNo), nationality, emailAddress, homeAddress, department, designation, officeAddress, officeContactNo, driverLicenseExpiryDate, safetyPermitStartDate, safetyPermitEndDate);
+            Pep pep = getPep();
             pep.setNricPassportNo(nric);
             pep.setName(name);
             pep.setCompanyName(companyName);
@@ -84,8 +71,26 @@ public class PEPOperations extends Pep {
             e.printStackTrace();
         }
     }
-	
-	public void readPep(Scanner scanner) {
+
+    private static Pep getPep() {
+        String receiptNo = new String();
+        String applicationType = new String();
+        String identityNo = new String();
+        String nationality = new String();
+        String emailAddress = new String();
+        String homeAddress = new String();
+        String department = new String();
+        String designation = new String();
+        String officeAddress = new String();
+        String officeContactNo = new String();
+        Date driverLicenseExpiryDate = new Date();
+        Date safetyPermitStartDate = new Date();
+        Date safetyPermitEndDate = new Date();
+        Pep pep = new Pep(receiptNo, applicationType, Optional.of(identityNo), nationality, emailAddress, homeAddress, department, designation, officeAddress, officeContactNo, driverLicenseExpiryDate, safetyPermitStartDate, safetyPermitEndDate);
+        return pep;
+    }
+
+    public void readPep(Scanner scanner) {
 		System.out.println("Read all PEP records");
         try (Connection conn = DriverManager.getConnection(url, username, password);
              Statement stmt = conn.createStatement()) {

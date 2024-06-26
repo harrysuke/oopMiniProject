@@ -4,42 +4,38 @@ package org.example;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.math.BigDecimal;
 import java.sql.*;
-import java.util.Date;
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 //A concrete class that extends the Vep class.
 public class VEPOperations extends Vep {
-    private final String url = "jdbc:mysql://localhost:3306/tbpsns";
-    private final String username = "root";
-    private final String password = "";
-    Scanner scanner = new Scanner(System.in);
 
     public void read(){
         try(Connection conn = DriverManager.getConnection(url, username, password);
-        Statement stmt = conn.createStatement();
-        //String sql = "SELECT rnu, NRICPassportNo, Name, CompanyName, VehicleNo, ContactNo, DateofVisit, ExpiryDate, LocationtoVisit, PurposeofVisit FROM vep";
-        ResultSet rs = stmt.executeQuery("SELECT rnu, NRICPassportNo, Name, CompanyName, VehicleNo, ContactNo, DateofVisit, ExpiryDate, LocationtoVisit, PurposeofVisit FROM vep")
+            Statement stmt = conn.createStatement();
+            //String sql = "SELECT rnu, NRICPassportNo, Name, CompanyName, VehicleNo, ContactNo, DateofVisit, ExpiryDate, LocationtoVisit, PurposeofVisit FROM vep";
+            ResultSet rs = stmt.executeQuery("SELECT rnu, NRICPassportNo, Name, CompanyName, VehicleNo, ContactNo, DateofVisit, ExpiryDate, LocationtoVisit, PurposeofVisit FROM vep")
         ){
             int rowCount = 0;
             while (rs.next()){
-                String rnu = rs.getString("rnu");
-                String nric = rs.getString("NRICPassportNo");
-                String name = rs.getString("Name");
-                String company = rs.getString("CompanyName");
-                String vehicleNo = rs.getString("VehicleNo");
-                String contactNo = rs.getString("ContactNo");
-                String dateOfVisit = rs.getString("DateofVisit");
-                String expiryDate = rs.getString("ExpiryDate");
-                String locationtoVisit = rs.getString("LocationtoVisit");
-                String purposeofVisit = rs.getString("PurposeofVisit");
+                Vep vep = new Vep();
+                vep.setRnu(Integer.parseInt(rs.getString("rnu")));
+                vep.setNricPassportNo(rs.getString("NRICPassportNo"));
+                vep.setName(rs.getString("Name"));
+                vep.setCompanyName(rs.getString("CompanyName"));
+                vep.setVehicleNo(rs.getString("VehicleNo"));
+                vep.setContactNo(rs.getString("ContactNo"));
+                vep.setDateOfVisit(rs.getString("DateofVisit"));
+                vep.setExpiryDate(rs.getString("ExpiryDate"));
+                vep.setLocationtoVisit(rs.getString("LocationtoVisit"));
+                vep.setPurposeofVisit(rs.getString("PurposeofVisit"));
                 //System.out.println("RNU: " + rnu + "\nNRIC: " + nric + "\nName: " + name + "\nCompany: " + company
-                        //+ "\nVehicle No: " + vehicleNo + "\nContact No: " + contactNo + "\nDate of visit: "
-                        //+ dateOfVisit + "\nExpiry Date: " + expiryDate + "\nLocation to visit: " + locationtoVisit
-                        //+ "\nPurpose of visit: " + purposeofVisit + "\n");
+                //+ "\nVehicle No: " + vehicleNo + "\nContact No: " + contactNo + "\nDate of visit: "
+                //+ dateOfVisit + "\nExpiry Date: " + expiryDate + "\nLocation to visit: " + locationtoVisit
+                //+ "\nPurpose of visit: " + purposeofVisit + "\n");
                 System.out.format("%-10s %-20s %-20s %-20s %-15s %-15s %-15s %-15s %-20s %-20s\n",
-                        rnu, nric, name, company, vehicleNo, contactNo, dateOfVisit, expiryDate, locationtoVisit, purposeofVisit);
+                        vep.getRnu(), vep.getNricPassportNo(), vep.getName(), vep.getCompanyName(), vep.getVehicleNo(), vep.getContactNo(), vep.getDateOfVisit(), vep.getExpiryDate(), vep.getLocationToVisit(), vep.getPurposeofVisit());
                 ++rowCount;
             }
             System.out.println("Total number of records " + rowCount);
@@ -72,14 +68,22 @@ public class VEPOperations extends Vep {
             System.out.println("Enter the ID of the record to update:");
             int id = scanner.nextInt();
 
+            Vep vep = new Vep();
+            vep.setNricPassportNo(nric);
+            vep.setName(name);
+            vep.setCompanyName(companyName);
+            vep.setVehicleNo(vehicleNo);
+            vep.setContactNo(contactNo);
+            vep.setId(id);
+
             String sql = "UPDATE vep SET NRICPassportNo=?, Name=?, CompanyName=?, VehicleNo=?, ContactNo=? WHERE id=?";
             try(PreparedStatement pstmt = conn.prepareStatement(sql)){
-                pstmt.setString(1, nric);
-                pstmt.setString(2, name);
-                pstmt.setString(3, companyName);
-                pstmt.setString(4, vehicleNo);
-                pstmt.setString(5, contactNo);
-                pstmt.setInt(6, id);
+                pstmt.setString(1, vep.getNricPassportNo());
+                pstmt.setString(2, vep.getName());
+                pstmt.setString(3, vep.getCompanyName());
+                pstmt.setString(4, vep.getVehicleNo());
+                pstmt.setString(5, vep.getContactNo());
+                pstmt.setInt(6, vep.getId());
                 int countUpdated = pstmt.executeUpdate();
 
                 System.out.println("Record updated successfully");
@@ -93,7 +97,7 @@ public class VEPOperations extends Vep {
 
     public void create(){
         try(Connection conn = DriverManager.getConnection(url, username, password);
-        Statement stmt = conn.createStatement()){
+            Statement stmt = conn.createStatement()){
 
             //USER INPUT
             System.out.println("Creating new VEP record\n");
@@ -113,18 +117,20 @@ public class VEPOperations extends Vep {
             System.out.println("Enter contact number:");
             String contactNo = scanner.nextLine();
 
-            //Date currentDate = new Date();
-            //String currentDateStr = df.format(currentDate);
+            Vep vep = new Vep();
+            vep.setNricPassportNo(nric);
+            vep.setName(name);
+            vep.setCompanyName(companyName);
+            vep.setVehicleNo(vehicleNo);
+            vep.setContactNo(contactNo);
 
-            String sql = "INSERT INTO vep (rnu, NRICPassportNo, Name, CompanyName, VehicleNo, ContactNo, DateofVisit, ExpiryDate, LocationtoVisit, PurposeofVisit) VALUES (0,?,?,?,?,?,?,?,0,0)";
+            String sql = "INSERT INTO vep (NRICPassportNo, Name, CompanyName, VehicleNo, ContactNo) VALUES (?,?,?,?,?)";
             try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, nric);
-                pstmt.setString(2, name);
-                pstmt.setString(3, companyName);
-                pstmt.setString(4, vehicleNo);
-                pstmt.setString(5, contactNo);
-                pstmt.setDate(6, new java.sql.Date(new Date().getTime()));
-                pstmt.setDate(7, new java.sql.Date(new Date().getTime()));
+                pstmt.setString(1, vep.getNricPassportNo());
+                pstmt.setString(2, vep.getName());
+                pstmt.setString(3, vep.getCompanyName());
+                pstmt.setString(4, vep.getVehicleNo());
+                pstmt.setString(5, vep.getContactNo());
                 int rowsAffected = pstmt.executeUpdate();
 
                 System.out.println(rowsAffected+" record added successfully");
@@ -138,13 +144,16 @@ public class VEPOperations extends Vep {
 
     public void delete(){
         try(Connection conn = DriverManager.getConnection(url, username, password);
-        Statement stmt = conn.createStatement()){
+            Statement stmt = conn.createStatement()){
             System.out.println("Enter ID to delete");
             int id = scanner.nextInt();
 
+            Vep vep = new Vep();
+            vep.setId(id);
+
             String sql = "DELETE FROM vep WHERE id=?";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setInt(1, id);
+                pstmt.setInt(1, vep.getId());
                 int rowsDeleted = pstmt.executeUpdate();
                 System.out.println(rowsDeleted+" record(s) deleted");
             }catch (SQLException e) {
@@ -157,31 +166,41 @@ public class VEPOperations extends Vep {
 
     public void search(){
         try(Connection conn = DriverManager.getConnection(url, username, password);
-        Statement stmt = conn.createStatement()){
+            Statement stmt = conn.createStatement()){
             System.out.println("Enter keyword to search:");
             String keyword = scanner.nextLine();
 
+            Vep vep = new Vep();
+            vep.setName(keyword);
+
             String sql = "SELECT * FROM vep WHERE Name LIKE ? ";
             try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, "%"+keyword+"%");
+                pstmt.setString(1, "%"+vep.getName()+"%");
                 ResultSet rs = pstmt.executeQuery();
                 int rowCount = 0;
 
                 while (rs.next()){
-                    String rnu = rs.getString("rnu");
-                    String nric = rs.getString("NRICPassportNo");
-                    String name = rs.getString("Name");
-                    String company = rs.getString("CompanyName");
-                    String vehicleNo = rs.getString("VehicleNo");
-                    String contactNo = rs.getString("ContactNo");
-                    String dateOfVisit = rs.getString("DateofVisit");
-                    String expiryDate = rs.getString("ExpiryDate");
-                    String locationtoVisit = rs.getString("LocationtoVisit");
-                    String purposeofVisit = rs.getString("PurposeofVisit");
-                    System.out.println("RNU: " + rnu + "\nNRIC: " + nric + "\nName: " + name + "\nCompany: " + company
-                            + "\nVehicle No: " + vehicleNo + "\nContact No: " + contactNo + "\nDate of visit: "
-                            + dateOfVisit + "\nExpiry Date: " + expiryDate + "\nLocation to visit: " + locationtoVisit
-                            + "\nPurpose of visit: " + purposeofVisit + "\n");
+                    Vep vepResult = new Vep();
+                    vepResult.setRnu(Integer.parseInt(rs.getString("rnu")));
+                    vepResult.setNricPassportNo(rs.getString("NRICPassportNo"));
+                    vepResult.setName(rs.getString("Name"));
+                    vepResult.setCompanyName(rs.getString("CompanyName"));
+                    vepResult.setVehicleNo(rs.getString("VehicleNo"));
+                    vepResult.setContactNo(rs.getString("ContactNo"));
+                    vepResult.setDateOfVisit(rs.getString("DateofVisit"));
+                    vepResult.setExpiryDate(rs.getString("ExpiryDate"));
+                    vepResult.setLocationtoVisit(rs.getString("LocationtoVisit"));
+                    vepResult.setPurposeofVisit(rs.getString("PurposeofVisit"));
+                    System.out.println("RNU: " + vepResult.getRnu() + "\n");
+                    System.out.println("NRIC: " + vepResult.getNricPassportNo() + "\n");
+                    System.out.println("Name: " + vepResult.getName() + "\n");
+                    System.out.println("Company: " + vepResult.getCompanyName() + "\n");
+                    System.out.println("Vehicle No: " + vepResult.getVehicleNo() + "\n");
+                    System.out.println("Contact No: " + vepResult.getContactNo() + "\n");
+                    System.out.println("Date of visit: " + vepResult.getDateOfVisit() + "\n");
+                    System.out.println("Expiry Date: " + vepResult.getExpiryDate() + "\n");
+                    System.out.println("Location to visit: " + vepResult.getLocationtoVisit() + "\n");
+                    System.out.println("Purpose of visit: " + vepResult.getPurposeofVisit() + "\n");
                     ++rowCount;
                 }
                 System.out.println("Total number of records "+rowCount);
@@ -192,15 +211,7 @@ public class VEPOperations extends Vep {
             e.printStackTrace();
         }
     }
-    
-    //polymorphism
-    public void callGetGroupVisitors() throws SQLException {
-    	System.out.println("Enter Group Visitor ID: ");
-        String idn = scanner.nextLine();
-        String result = getGroupVisitors(idn);
-        System.out.println(result);
-    }
-    
+
     //File
     public void exportToTextFile() {
         try (Connection conn = DriverManager.getConnection(url, username, password);
@@ -209,20 +220,21 @@ public class VEPOperations extends Vep {
             String filename = "exportvep.txt";
             try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
                 while (rs.next()) {
-                    String rnu = rs.getString("rnu");
-                    String nric = rs.getString("NRICPassportNo");
-                    String name = rs.getString("Name");
-                    String company = rs.getString("CompanyName");
-                    String vehicleNo = rs.getString("VehicleNo");
-                    String contactNo = rs.getString("ContactNo");
-                    String dateOfVisit = rs.getString("DateofVisit");
-                    String expiryDate = rs.getString("ExpiryDate");
-                    String locationtoVisit = rs.getString("LocationtoVisit");
-                    String purposeofVisit = rs.getString("PurposeofVisit");
-                    writer.println("RNU: " + rnu + "\nNRIC: " + nric + "\nName: " + name + "\nCompany: " + company
-                            + "\nVehicle No: " + vehicleNo + "\nContact No: " + contactNo + "\nDate of visit: "
-                            + dateOfVisit + "\nExpiry Date: " + expiryDate + "\nLocation to visit: " + locationtoVisit
-                            + "\nPurpose of visit: " + purposeofVisit + "\n");
+                    Vep vep = new Vep();
+                    vep.setRnu(Integer.parseInt(rs.getString("rnu")));
+                    vep.setNricPassportNo(rs.getString("NRICPassportNo"));
+                    vep.setName(rs.getString("Name"));
+                    vep.setCompanyName(rs.getString("CompanyName"));
+                    vep.setVehicleNo(rs.getString("VehicleNo"));
+                    vep.setContactNo(rs.getString("ContactNo"));
+                    vep.setDateOfVisit(rs.getString("DateofVisit"));
+                    vep.setExpiryDate(rs.getString("ExpiryDate"));
+                    vep.setLocationtoVisit(rs.getString("LocationtoVisit"));
+                    vep.setPurposeofVisit(rs.getString("PurposeofVisit"));
+                    writer.println("RNU: " + vep.getRnu() + "\nNRIC: " + vep.getNricPassportNo() + "\nName: " + vep.getName() + "\nCompany: " + vep.getCompanyName()
+                            + "\nVehicle No: " + vep.getVehicleNo() + "\nContact No: " + vep.getContactNo() + "\nDate of visit: "
+                            + vep.getDateOfVisit() + "\nExpiry Date: " + vep.getExpiryDate() + "\nLocation to visit: " + vep.getLocationtoVisit()
+                            + "\nPurpose of visit: " + vep.getPurposeofVisit() + "\n");
                 }
                 System.out.println("Records exported to " + filename);
             } catch (IOException e) {
@@ -233,109 +245,37 @@ public class VEPOperations extends Vep {
         }
     }
 
-
-    @Override
-    public int getRnu() {
-        return 0;
+    //polymorphism
+    public void callGetGroupVisitors() throws SQLException {
+        System.out.println("Enter Group Visitor ID: ");
+        String idn = scanner.nextLine();
+        String result = getGroupVisitors(idn);
+        System.out.println(result);
     }
+    //polymorphism
+    public String getGroupVisitors(String idno) throws SQLException{
+        List<String> groupVisitors = new ArrayList<>();
+        try (Connection conn = DriverManager.getConnection(url, username, password);
+             Statement stmt = conn.createStatement()) {
+            String sql = "SELECT idno, Name, CompanyName, PermitType, amount FROM viewveppep WHERE idno = ?"; // Select specific columns
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, idno);
+                try (ResultSet rs = stmt.executeQuery(sql)) {
+                    if (!rs.next()){
+                        return "No record found for ID: "+idno;
+                    }
+                    while (rs.next()) {
+                        String idn = rs.getString("idno");
+                        String name = rs.getString("Name");
+                        String companyName = rs.getString("CompanyName");
+                        String permitType = rs.getString("PermitType");
+                        String amount = rs.getString("amount"); // Assuming amount is a String
 
-    @Override
-    public String getIdentityType() {
-        return "";
-    }
-
-    @Override
-    public String getName() {
-        return "";
-    }
-
-    @Override
-    public String getCompanyName() {
-        return "";
-    }
-
-    @Override
-    public String getVehicleNo() {
-        return "";
-    }
-
-    @Override
-    public String getContactNo() {
-        return "";
-    }
-
-    @Override
-    public String getApplicantCategory() {
-        return "";
-    }
-
-    @Override
-    public String getDateOfVisit() {
-        return null;
-    }
-
-    @Override
-    public String getExpiryDate() {
-        return null;
-    }
-
-    @Override
-    public int getDurationOfVisit() {
-        return 0;
-    }
-
-    @Override
-    public String getLocationToVisit() {
-        return "";
-    }
-
-    @Override
-    public String getPurposeOfVisit() {
-        return "";
-    }
-
-    @Override
-    public BigDecimal getAmount() {
-        return null;
-    }
-
-    @Override
-    public BigDecimal getTotalAmount() {
-        return null;
-    }
-
-    @Override
-    public int getProcessingStatus() {
-        return 0;
-    }
-
-    @Override
-    public Date getSafetyPermitExpiry() {
-        return null;
-    }
-
-    @Override
-    public String getRemark() {
-        return "";
-    }
-
-    @Override
-    public String getPermitType() {
-        return "";
-    }
-
-    @Override
-    public void getConnectionString() {
-
-    }
-
-    @Override
-    public void registerVep() {
-
-    }
-
-    @Override
-    public String searchVep() {
-        return "";
+                        groupVisitors.add(String.format("idno: %s\nName: %s\nCompany: %s\nPermit Type: %s\nAmount: %s\n", idn, name, companyName, permitType, amount));
+                    }
+                }
+            }
+        }
+        return String.join("", groupVisitors); // Join list elements for a single string
     }
 }

@@ -5,8 +5,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-	private static final List<Vep> veps = new ArrayList<>();
-	private static final List<Pep> peps = new ArrayList<>();
+    private static final List<Pep> peps = new ArrayList<>();
 	
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
