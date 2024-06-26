@@ -14,12 +14,10 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.Scanner;
 
-import com.mysql.cj.x.protobuf.MysqlxDatatypes.Scalar.String;
-
 public class PEPOperations extends Pep {
-	private final java.lang.String url = "jdbc:mysql://localhost:3306/tbpsns";
-    private final java.lang.String username = "root";
-    private final java.lang.String password = "";
+	private final String url = "jdbc:mysql://localhost:3306/tbpsns";
+    private final String username = "root";
+    private final String password = "";
     Scanner scanner = new Scanner(System.in);
     
 	public PEPOperations(String receiptNo, String applicationType, String identityNo, String nationality,
@@ -40,21 +38,34 @@ public class PEPOperations extends Pep {
             System.out.println("Creating new VEP record\n");
 
             System.out.println("Enter NRIC/Passport number:");
-            java.lang.String nric = scanner.nextLine();
+            String nric = scanner.nextLine();
 
             System.out.println("Enter Name:");
-            java.lang.String name = scanner.nextLine();
+            String name = scanner.nextLine();
 
             System.out.println("Enter Company Name:");
-            java.lang.String companyName = scanner.nextLine();
+            String companyName = scanner.nextLine();
 
             System.out.println("Enter vehicle number:");
-            java.lang.String vehicleNo = scanner.nextLine();
+            String vehicleNo = scanner.nextLine();
 
             System.out.println("Enter contact number:");
-            java.lang.String contactNo = scanner.nextLine();
+            String contactNo = scanner.nextLine();
 
-            Pep pep = getPep();
+            String receiptNo = new String();
+            String applicationType = new String();
+            String identityNo = new String();
+            String nationality = new String();
+            String emailAddress = new String();
+            String homeAddress = new String();
+            String department = new String();
+            String designation = new String();
+            String officeAddress = new String();
+            String officeContactNo = new String();
+            Date driverLicenseExpiryDate = new Date();
+            Date safetyPermitStartDate = new Date();
+            Date safetyPermitEndDate = new Date();
+            Pep pep = new Pep(receiptNo, applicationType, Optional.of(identityNo), nationality, emailAddress, homeAddress, department, designation, officeAddress, officeContactNo, driverLicenseExpiryDate, safetyPermitStartDate, safetyPermitEndDate);
             pep.setNricPassportNo(nric);
             pep.setName(name);
             pep.setCompanyName(companyName);
@@ -73,18 +84,12 @@ public class PEPOperations extends Pep {
             e.printStackTrace();
         }
     }
-
-    private static Pep getPep() {
-
-        Pep pep = new Pep(receiptNo, applicationType, identityNo, nationality, emailAddress, homeAddress, department, designation, officeAddress, officeContactNo, driverLicenseExpiryDate, safetyPermitStartDate, safetyPermitEndDate);
-        return pep;
-    }
-
-    public void readPep(Scanner scanner) {
+	
+	public void readPep(Scanner scanner) {
 		System.out.println("Read all PEP records");
         try (Connection conn = DriverManager.getConnection(url, username, password);
              Statement stmt = conn.createStatement()) {
-            java.lang.String sql = "SELECT * FROM pep";
+            String sql = "SELECT * FROM pep";
             try (ResultSet rs = stmt.executeQuery(sql)) {
                 int rowCount = 0;
                 while (rs.next()) {
@@ -112,12 +117,12 @@ public class PEPOperations extends Pep {
         try (Connection conn = DriverManager.getConnection(url, username, password);
              Statement stmt = conn.createStatement()) {
             System.out.println("Enter keyword to search:");
-            java.lang.String keyword = scanner.nextLine();
+            String keyword = scanner.nextLine();
 
             Pep pep = new Pep();
             pep.setName(keyword);
 
-            java.lang.String sql = "SELECT * FROM pep WHERE Name LIKE ? ";
+            String sql = "SELECT * FROM pep WHERE Name LIKE ? ";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, "%" + pep.getName() + "%");
                 ResultSet rs = pstmt.executeQuery();
@@ -148,19 +153,19 @@ public class PEPOperations extends Pep {
         try (Connection conn = DriverManager.getConnection(url, username, password)) {
             //USER INPUT
             System.out.println("Enter NRIC/Passport number:");
-            java.lang.String nric = scanner.nextLine();
+            String nric = scanner.nextLine();
 
             System.out.println("Enter Name:");
-            java.lang.String name = scanner.nextLine();
+            String name = scanner.nextLine();
 
             System.out.println("Enter Company Name:");
-            java.lang.String companyName = scanner.nextLine();
+            String companyName = scanner.nextLine();
 
             System.out.println("Enter vehicle number:");
-            java.lang.String vehicleNo = scanner.nextLine();
+            String vehicleNo = scanner.nextLine();
 
             System.out.println("Enter contact number:");
-            java.lang.String contactNo = scanner.nextLine();
+            String contactNo = scanner.nextLine();
 
             Pep pep = new Pep();
             pep.setNricPassportNo(nric);
@@ -169,7 +174,7 @@ public class PEPOperations extends Pep {
             pep.setVehicleNo(vehicleNo);
             pep.setContactNo(contactNo);
 
-            java.lang.String sql = "UPDATE pep SET NRICPassportNo=?, Name=?, CompanyName=?, VehicleNo=?, ContactNo=? WHERE NRICPassportNo=?";
+            String sql = "UPDATE pep SET NRICPassportNo=?, Name=?, CompanyName=?, VehicleNo=?, ContactNo=? WHERE NRICPassportNo=?";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, pep.getNricPassportNo());
                 pstmt.setString(2, pep.getName());
@@ -197,7 +202,7 @@ public class PEPOperations extends Pep {
             Pep pep = new Pep();
             pep.setId(id);
 
-            java.lang.String sql = "DELETE FROM pep WHERE id=?";
+            String sql = "DELETE FROM pep WHERE id=?";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setInt(1, pep.getId());
                 int rowsDeleted = pstmt.executeUpdate();
@@ -213,8 +218,8 @@ public class PEPOperations extends Pep {
   //polymorphism
     public void callGetGroupVisitors() {
     	System.out.println("Enter Group Visitor ID: ");
-        java.lang.String idn = scanner.toString();
-        java.lang.String result = getGroupVisitors(idn);
+        String idn = scanner.toString();
+        String result = getGroupVisitors(idn);
         System.out.println(result);
     }
     
@@ -223,7 +228,7 @@ public class PEPOperations extends Pep {
         try (Connection conn = DriverManager.getConnection(url, username, password);
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM pep")) {
-            java.lang.String filename = "exportpep.txt";
+            String filename = "exportpep.txt";
             try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
                 while (rs.next()) {
                     Pep pep = new Pep();
@@ -250,9 +255,5 @@ public class PEPOperations extends Pep {
             e.printStackTrace();
         }
     }
-
-    @Override
-    public String getGroupVisitors(String idn) throws SQLException {
-        return null;
-    }
+    
 }
