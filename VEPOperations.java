@@ -24,22 +24,23 @@ public class VEPOperations extends Vep {
         ){
             int rowCount = 0;
             while (rs.next()){
-                String rnu = rs.getString("rnu");
-                String nric = rs.getString("NRICPassportNo");
-                String name = rs.getString("Name");
-                String company = rs.getString("CompanyName");
-                String vehicleNo = rs.getString("VehicleNo");
-                String contactNo = rs.getString("ContactNo");
-                String dateOfVisit = rs.getString("DateofVisit");
-                String expiryDate = rs.getString("ExpiryDate");
-                String locationtoVisit = rs.getString("LocationtoVisit");
-                String purposeofVisit = rs.getString("PurposeofVisit");
+                Vep vep = new Vep();
+                vep.setRnu(Integer.parseInt(rs.getString("rnu")));
+                vep.setNricPassportNo(rs.getString("NRICPassportNo"));
+                vep.setName(rs.getString("Name"));
+                vep.setCompanyName(rs.getString("CompanyName"));
+                vep.setVehicleNo(rs.getString("VehicleNo"));
+                vep.setContactNo(rs.getString("ContactNo"));
+                vep.setDateOfVisit(rs.getString("DateofVisit"));
+                vep.setExpiryDate(rs.getString("ExpiryDate"));
+                vep.setLocationtoVisit(rs.getString("LocationtoVisit"));
+                vep.setPurposeofVisit(rs.getString("PurposeofVisit"));
                 //System.out.println("RNU: " + rnu + "\nNRIC: " + nric + "\nName: " + name + "\nCompany: " + company
                         //+ "\nVehicle No: " + vehicleNo + "\nContact No: " + contactNo + "\nDate of visit: "
                         //+ dateOfVisit + "\nExpiry Date: " + expiryDate + "\nLocation to visit: " + locationtoVisit
                         //+ "\nPurpose of visit: " + purposeofVisit + "\n");
                 System.out.format("%-10s %-20s %-20s %-20s %-15s %-15s %-15s %-15s %-20s %-20s\n",
-                        rnu, nric, name, company, vehicleNo, contactNo, dateOfVisit, expiryDate, locationtoVisit, purposeofVisit);
+                        vep.getRnu(), getNricPassportNo(), vep.getName(), vep.getCompanyName(), vep.getVehicleNo(), vep.getContactNo(), vep.getDateOfVisit(), vep.getExpiryDate(), vep.getLocationToVisit(), vep.getPurposeofVisit());
                 ++rowCount;
             }
             System.out.println("Total number of records " + rowCount);
@@ -72,14 +73,22 @@ public class VEPOperations extends Vep {
             System.out.println("Enter the ID of the record to update:");
             int id = scanner.nextInt();
 
+            Vep vep = new Vep();
+            vep.setNricPassportNo(nric);
+            vep.setName(name);
+            vep.setCompanyName(companyName);
+            vep.setVehicleNo(vehicleNo);
+            vep.setContactNo(contactNo);
+            vep.setId(id);
+
             String sql = "UPDATE vep SET NRICPassportNo=?, Name=?, CompanyName=?, VehicleNo=?, ContactNo=? WHERE id=?";
             try(PreparedStatement pstmt = conn.prepareStatement(sql)){
-                pstmt.setString(1, nric);
-                pstmt.setString(2, name);
-                pstmt.setString(3, companyName);
-                pstmt.setString(4, vehicleNo);
-                pstmt.setString(5, contactNo);
-                pstmt.setInt(6, id);
+                pstmt.setString(1, vep.getNricPassportNo());
+                pstmt.setString(2, vep.getName());
+                pstmt.setString(3, vep.getCompanyName());
+                pstmt.setString(4, vep.getVehicleNo());
+                pstmt.setString(5, vep.getContactNo());
+                pstmt.setInt(6, vep.getId());
                 int countUpdated = pstmt.executeUpdate();
 
                 System.out.println("Record updated successfully");
@@ -113,16 +122,19 @@ public class VEPOperations extends Vep {
             System.out.println("Enter contact number:");
             String contactNo = scanner.nextLine();
 
-            //Date currentDate = new Date();
-            //String currentDateStr = df.format(currentDate);
+            Vep vep = new Vep();
+            vep.setNricPassportNo(nric);
+            vep.setName(name);
+            vep.setVehicleNo(vehicleNo);
+            vep.setContactNo(contactNo);
 
             String sql = "INSERT INTO vep (rnu, NRICPassportNo, Name, CompanyName, VehicleNo, ContactNo, DateofVisit, ExpiryDate, LocationtoVisit, PurposeofVisit) VALUES (0,?,?,?,?,?,?,?,0,0)";
             try(PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, nric);
-                pstmt.setString(2, name);
-                pstmt.setString(3, companyName);
-                pstmt.setString(4, vehicleNo);
-                pstmt.setString(5, contactNo);
+                pstmt.setString(1, vep.getNricPassportNo());
+                pstmt.setString(2, vep.getName());
+                pstmt.setString(3, vep.getCompanyName());
+                pstmt.setString(4, vep.getVehicleNo());
+                pstmt.setString(5, vep.getContactNo());
                 pstmt.setDate(6, new java.sql.Date(new Date().getTime()));
                 pstmt.setDate(7, new java.sql.Date(new Date().getTime()));
                 int rowsAffected = pstmt.executeUpdate();
@@ -142,9 +154,12 @@ public class VEPOperations extends Vep {
             System.out.println("Enter ID to delete");
             int id = scanner.nextInt();
 
+            Vep vep = new Vep();
+            vep.setId(id);
+
             String sql = "DELETE FROM vep WHERE id=?";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setInt(1, id);
+                pstmt.setInt(1, vep.getId());
                 int rowsDeleted = pstmt.executeUpdate();
                 System.out.println(rowsDeleted+" record(s) deleted");
             }catch (SQLException e) {
@@ -168,20 +183,21 @@ public class VEPOperations extends Vep {
                 int rowCount = 0;
 
                 while (rs.next()){
-                    String rnu = rs.getString("rnu");
-                    String nric = rs.getString("NRICPassportNo");
-                    String name = rs.getString("Name");
-                    String company = rs.getString("CompanyName");
-                    String vehicleNo = rs.getString("VehicleNo");
-                    String contactNo = rs.getString("ContactNo");
-                    String dateOfVisit = rs.getString("DateofVisit");
-                    String expiryDate = rs.getString("ExpiryDate");
-                    String locationtoVisit = rs.getString("LocationtoVisit");
-                    String purposeofVisit = rs.getString("PurposeofVisit");
-                    System.out.println("RNU: " + rnu + "\nNRIC: " + nric + "\nName: " + name + "\nCompany: " + company
-                            + "\nVehicle No: " + vehicleNo + "\nContact No: " + contactNo + "\nDate of visit: "
-                            + dateOfVisit + "\nExpiry Date: " + expiryDate + "\nLocation to visit: " + locationtoVisit
-                            + "\nPurpose of visit: " + purposeofVisit + "\n");
+                    Vep vep = new Vep();
+                    vep.setRnu(Integer.parseInt(rs.getString("rnu")));
+                    setNricPassportNo(rs.getString("NRICPassportNo"));
+                    vep.setName(rs.getString("Name"));
+                    vep.setCompanyName(rs.getString("CompanyName"));
+                    vep.setVehicleNo(rs.getString("VehicleNo"));
+                    vep.setContactNo(rs.getString("ContactNo"));
+                    vep.setDateOfVisit(rs.getString("DateofVisit"));
+                    vep.setExpiryDate(rs.getString("ExpiryDate"));
+                    vep.setLocationtoVisit(rs.getString("LocationtoVisit"));
+                    vep.setPurposeofVisit(rs.getString("PurposeofVisit"));
+                    System.out.print("RNU: " + vep.getRnu() + "\tNRIC: " + vep.getNricPassportNo() + "\tName: " + vep.getName() + "\tCompany: " + vep.getCompanyName()
+                            + "\tVehicle No: " + vep.getVehicleNo() + "\tContact No: " + vep.getContactNo() + "\tDate of visit: "
+                            + vep.getDateOfVisit() + "\tExpiry Date: " + vep.getExpiryDate() + "\tLocation to visit: " + vep.getLocationtoVisit()
+                            + "\tPurpose of visit: " + vep.getPurposeofVisit() + "\n");
                     ++rowCount;
                 }
                 System.out.println("Total number of records "+rowCount);
@@ -209,20 +225,21 @@ public class VEPOperations extends Vep {
             String filename = "exportvep.txt";
             try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
                 while (rs.next()) {
-                    String rnu = rs.getString("rnu");
-                    String nric = rs.getString("NRICPassportNo");
-                    String name = rs.getString("Name");
-                    String company = rs.getString("CompanyName");
-                    String vehicleNo = rs.getString("VehicleNo");
-                    String contactNo = rs.getString("ContactNo");
-                    String dateOfVisit = rs.getString("DateofVisit");
-                    String expiryDate = rs.getString("ExpiryDate");
-                    String locationtoVisit = rs.getString("LocationtoVisit");
-                    String purposeofVisit = rs.getString("PurposeofVisit");
-                    writer.println("RNU: " + rnu + "\nNRIC: " + nric + "\nName: " + name + "\nCompany: " + company
-                            + "\nVehicle No: " + vehicleNo + "\nContact No: " + contactNo + "\nDate of visit: "
-                            + dateOfVisit + "\nExpiry Date: " + expiryDate + "\nLocation to visit: " + locationtoVisit
-                            + "\nPurpose of visit: " + purposeofVisit + "\n");
+                    Vep vep = new Vep();
+                    vep.setRnu(Integer.parseInt(rs.getString("rnu")));
+                    vep.setNricPassportNo(rs.getString("NRICPassportNo"));
+                    vep.setName(rs.getString("Name"));
+                    vep.setCompanyName(rs.getString("CompanyName"));
+                    vep.setVehicleNo(rs.getString("VehicleNo"));
+                    vep.setContactNo(rs.getString("ContactNo"));
+                    vep.setDateOfVisit(rs.getString("DateofVisit"));
+                    vep.setExpiryDate(rs.getString("ExpiryDate"));
+                    vep.setLocationtoVisit(rs.getString("LocationtoVisit"));
+                    vep.setPurposeofVisit(rs.getString("PurposeofVisit"));
+                    writer.println("RNU: " + vep.getRnu() + "\nNRIC: " + vep.getNricPassportNo() + "\nName: " + vep.getName() + "\nCompany: " + vep.getCompanyName()
+                            + "\nVehicle No: " + vep.getVehicleNo() + "\nContact No: " + vep.getContactNo() + "\nDate of visit: "
+                            + vep.getDateOfVisit() + "\nExpiry Date: " + vep.getExpiryDate() + "\nLocation to visit: " + vep.getLocationtoVisit()
+                            + "\nPurpose of visit: " + vep.getPurposeofVisit() + "\n");
                 }
                 System.out.println("Records exported to " + filename);
             } catch (IOException e) {
