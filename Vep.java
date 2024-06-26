@@ -1,6 +1,8 @@
 //Vep.java
 package org.example;
 
+import com.mysql.cj.x.protobuf.MysqlxDatatypes;
+
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -418,6 +420,11 @@ public class Vep extends VepAbstract {
     @Override
     public String searchVep() {
         return "";
+    }
+
+    @Override
+    public MysqlxDatatypes.Scalar.String getGroupVisitors(MysqlxDatatypes.Scalar.String idn) throws SQLException {
+        return null;
     }
 
     public void setExpiryDate(String expiryDate) {
